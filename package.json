@@ -1,7 +1,7 @@
 {
-  "name": "craftsman",
+  "name": "@1450factory/craftsman",
   "version": "0.0.1",
-  "description": "",
+  "description": "Craftsman is a command line help you to speed up your node projects development.",
   "keywords": [
     "nodejs",
     "nodejs cli",
@@ -14,18 +14,14 @@
     "url": "https://github.com/1450Factory/craftsman/issues",
     "email": "craftsman@1450factory.com"
   },
-  "author": {
-    "name": "Hamza Makraz",
-    "email": "contact@makraz.com",
-    "url": "https://www.makraz.com"
-  },
+  "author": "Hamza Makraz <contact@makraz.com> (https://www.makraz.com)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/1450Factory/craftsman.git"
   },
   "main": "index.js",
   "bin": {
-    "craftsman": "./index.js"
+    "craftsman": "index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -37,5 +33,6 @@
     "inquirer": "^7.3.3",
     "ora": "^5.1.0",
     "simple-git": "^2.20.1"
-  }
+  },
+  "devDependencies": {}
 }

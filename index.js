@@ -34,7 +34,7 @@ program
 
     const remote = `https://github.com/1450Factory/express-${language}-starter.git`;
 
-    name = name.toLowerCase().replace(' ', '_');
+    name = name.toLowerCase().replace(/ /g, '_');
 
     git().silent(true)
       .clone(remote, `${destination}/${name}`)
@@ -91,7 +91,7 @@ program
 
     let fields = [];
 
-    console.log(colors.bgWhite.black('  feed your Model  \r\n'));
+    console.log(colors.bgWhite.black('  Feed your model  \r\n'));
 
     const askQuestion = async () => {
       let mongoTypes = ['String', 'Number', 'Date', 'Boolean', 'ObjectId', 'Array'];
@@ -162,7 +162,6 @@ program
     };
 
     askQuestion();
-    // name = name.toLowerCase().replace(' ', '_');
   });
 
 program

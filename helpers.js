@@ -16,7 +16,7 @@ module.exports.createFile = (filename, type, language, destination, options = {}
     destination = '.'
   }
 
-  if (!fs.existsSync(`${destination}`)) {
+  if (!fs.existsSync(`${destination}/app/${type}s`)) {
     fs.mkdirSync(`${destination}`);
   }
 
@@ -25,7 +25,7 @@ module.exports.createFile = (filename, type, language, destination, options = {}
   let result = template({ name: filename, fields: options.fields });
 
   try {
-    fs.writeFileSync(`${destination}/${filename}.${language}`, result, "UTF-8");
+    fs.writeFileSync(`${destination}/app/${type}s/${filename}.${language}`, result, "UTF-8");
   } catch (error) {
     console.error(error);
   }

@@ -25,6 +25,10 @@ Handlebars.registerHelper('toCamelCase', function (string) {
     .replace(/^(.)/, function ($1) { return $1.toLowerCase(); });
 })
 
+Handlebars.registerHelper('toPascalCase', function (string) {
+  return string.replace(/(\w)(\w*)/g, function (g0, g1, g2) { return g1.toUpperCase() + g2.toLowerCase(); });
+})
+
 Handlebars.registerHelper('toSnakeCase', function (string) {
   return string.replace(/\W+/g, " ")
     .split(/ |\B(?=[A-Z])/)

@@ -2,18 +2,14 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const <%= name %>Schema = new Schema({
-    <% fields.forEach(function(field){ %>
-    <% if (field.name) { %>
-    <%= field.name %>: { type: <%= field.type %> },
-    <% } %>
-    <% }); %>
+const {{toCamelCase name}}Schema = new Schema({
+    {{#each fields}}{{#if this.name}}{{this.name}}: { type: {{this.type}} },{{/if}}{{/each}}
     deletedAt: Date
   },
   {
-    collection: '<%= name %>s', 
+    collection: '{{toSnakeCase name}}s', 
     timestamps: true
   }
 )
 
-module.exports = mongoose.model('<%= name %>s', <%= name %>Schema)
+module.exports = mongoose.model('{{toSnakeCase name}}s', {{toCamelCase name}}Schema)

@@ -9,7 +9,6 @@ const fs = require('fs');
 const inquirer = require("inquirer");
 const { toTitleCase, createFile } = require("./helpers");
 
-
 const program = new Command();
 
 program
@@ -76,7 +75,7 @@ program
     }
 
     if (destination === undefined) {
-      destination = './models'
+      destination = './'
     }
 
     if (destination.endsWith('/')) {
@@ -84,10 +83,6 @@ program
     }
 
     name = toTitleCase(name);
-
-    if (!fs.existsSync(`${destination}`)) {
-      fs.mkdirSync(`${destination}`);
-    }
 
     let fields = [];
 

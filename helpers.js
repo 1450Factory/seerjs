@@ -59,9 +59,23 @@ module.exports.createFile = (filename, type, language, destination, options = {}
   let output = template({ name: filename, fields: options.fields });
 
   try {
-    fs.writeFileSync(`${destination}/app/${type}s/${filename}.${language}`, output, "UTF-8");
+    fs.writeFileSync(`${destination}/app/${type}s/${filename}s.${language}`, output, "UTF-8");
   } catch (error) {
     console.error(error);
+  }
+
+  if (type === 'route') {
+    fs.readFile(`${destination}/app/routes/index.js`, 'utf8', function (err, data) {
+      if (err) {
+        return console.log(err);
+      }
+
+      let result = data.replace(/module.exports = router/g, `router.use(\'/${filename}s\', isAuthenticated, require(\'./${filename}s\'));\r\n\r\nmodule.exports = router\r\n`);
+
+      fs.writeFile(`${destination}/app/routes/index.js`, result, 'utf8', function (err) {
+        if (err) return console.log(err);
+      });
+    });
   }
 };
 
@@ -76,3 +90,4 @@ mkdirp = (dir) => {
 
   fs.mkdirSync(dir);
 }
+

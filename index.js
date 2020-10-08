@@ -187,6 +187,32 @@ program
 
 
 program
+  .command('make:route <name> [destination]')
+  .description('Make a route file')
+  .action((name, destination) => {
+    let language = (program.typescript) ? 'typescript' : 'javascript';
+
+    if (program.debug) {
+      console.log('output extra debugging', program.opts());
+    }
+
+    if (destination === undefined) {
+      destination = './'
+    }
+
+    if (destination.endsWith('/')) {
+      destination = destination.slice(0, -1);
+    }
+
+    name = toTitleCase(name);
+
+    createFile(name, 'route', language, destination);
+
+    console.log(colors.bgGreen.white('  Route created sucessfully!  \r\n'));
+  });
+
+
+program
   .version('0.0.1', '-v, --version', 'output the current version')
   .description("Craftsman is a command line help you to speed up your node projects development.")
   .option('-d, --debug', 'output extra debugging')

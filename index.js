@@ -9,7 +9,6 @@ const fs = require('fs');
 const inquirer = require("inquirer");
 const { toTitleCase, createFile } = require("./helpers");
 
-
 const program = new Command();
 
 program
@@ -76,7 +75,7 @@ program
     }
 
     if (destination === undefined) {
-      destination = './models'
+      destination = './'
     }
 
     if (destination.endsWith('/')) {
@@ -84,10 +83,6 @@ program
     }
 
     name = toTitleCase(name);
-
-    if (!fs.existsSync(`${destination}`)) {
-      fs.mkdirSync(`${destination}`);
-    }
 
     let fields = [];
 
@@ -163,6 +158,165 @@ program
 
     askQuestion();
   });
+
+
+program
+  .command('make:controller <name> [destination]')
+  .description('Make a controller file')
+  .action((name, destination) => {
+    let language = (program.typescript) ? 'typescript' : 'javascript';
+
+    if (program.debug) {
+      console.log('output extra debugging', program.opts());
+    }
+
+    if (destination === undefined) {
+      destination = './'
+    }
+
+    if (destination.endsWith('/')) {
+      destination = destination.slice(0, -1);
+    }
+
+    name = toTitleCase(name);
+
+    createFile(name, 'controller', language, destination);
+
+    console.log(colors.bgGreen.white('  Controller created sucessfully!  \r\n'));
+  });
+
+
+program
+  .command('make:route <name> [destination]')
+  .description('Make a route file')
+  .action((name, destination) => {
+    let language = (program.typescript) ? 'typescript' : 'javascript';
+
+    if (program.debug) {
+      console.log('output extra debugging', program.opts());
+    }
+
+    if (destination === undefined) {
+      destination = './'
+    }
+
+    if (destination.endsWith('/')) {
+      destination = destination.slice(0, -1);
+    }
+
+    name = toTitleCase(name);
+
+    createFile(name, 'route', language, destination);
+
+    console.log(colors.bgGreen.white('  Route created sucessfully!  \r\n'));
+  });
+
+
+program
+  .command('make:crud <name> [destination]')
+  .description('Make a route file')
+  .action((name, destination) => {
+    let language = (program.typescript) ? 'typescript' : 'javascript';
+
+    if (program.debug) {
+      console.log('output extra debugging', program.opts());
+    }
+
+    if (destination === undefined) {
+      destination = './'
+    }
+
+    if (destination.endsWith('/')) {
+      destination = destination.slice(0, -1);
+    }
+
+    name = toTitleCase(name);
+
+    let fields = [];
+
+    console.log(colors.bgWhite.black('  Feed your model  \r\n'));
+
+    const askQuestion = async () => {
+      let mongoTypes = ['String', 'Number', 'Date', 'Boolean', 'ObjectId', 'Array'];
+
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: `name`,
+            message: `${"Field name (lowercase) : "}\r\n`,
+            default: "",
+            validate: function (input) { /* Legacy way: with this.async */
+              // Declare function as asynchronous, and save the done callback
+              let done = this.async();
+
+
+              if (!/^[A-Za-z]*/.test(input)) {
+                // Pass the return value in the done callback
+                done('Model name need to start with a letter A-Z');
+                return;
+              }
+
+              // Pass the return value in the done callback
+              done(null, true);
+            }
+          },
+
+          {
+            type: "input",
+            name: `type`,
+            message: `${"Field type (Accepted types [String|Number|Date|Boolean|ObjectId|Array] | Default type is [String]): "}\r\n`,
+            default: `String`,
+            validate: function (input) { /* Legacy way: with this.async */
+              // Declare function as asynchronous, and save the done callback
+              let done = this.async();
+
+              if (!mongoTypes.includes(input)) {
+                // Pass the return value in the done callback
+                done('Accepted types are String|Number|Date|Boolean|ObjectId|Array');
+                return;
+              }
+
+              // Pass the return value in the done callback
+              done(null, true);
+            }
+          }
+        ])
+        .then((answer) => {
+          fields.push(answer);
+
+          if (answer.name != "") {
+            askQuestion();
+          } else {
+            createFile(name, 'model', language, destination, { fields });
+
+            console.log(colors.bgGreen.white('  Model created sucessfully!  \r\n'));
+
+            createFile(name, 'controller', language, destination);
+
+            console.log(colors.bgGreen.white('  Controller created sucessfully!  \r\n'));
+
+            createFile(name, 'route', language, destination);
+
+            console.log(colors.bgGreen.white('  Route created sucessfully!  \r\n'));
+          }
+        })
+        .catch(error => {
+          if (error.isTtyError) {
+            // Prompt couldn't be rendered in the current environment
+          } else {
+            // Something else when wrong
+          }
+          console.log(colors.bgRed.white('  Error!  \r\n'));
+          console.error(error);
+        });
+    };
+
+    askQuestion();
+
+    console.log(colors.bgGreen.white('  CRUD created sucessfully!  \r\n'));
+  });
+
 
 program
   .version('0.0.1', '-v, --version', 'output the current version')

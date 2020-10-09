@@ -1,19 +1,18 @@
-# Craftsman
+# Seerjs
 
-Craftsman is a command line help you to speed up your node projects development.
+Seerjs is a command line help you to speed up your node projects development.
 
 ## Installation
 
-`$ npm install @1450factory/craftsman -g`
+`$ npm install @1450factory/seerjs -g`
 
 or
 
-`$ npx @1450factory/craftsman ....`
-
+`$ npx @1450factory/seerjs ....`
 
 ## Usage
 
-craftsman [options] [command]
+seerjs [options] [command]
 
 **Options:**
 * -v, --version: Display the current version
@@ -27,9 +26,8 @@ craftsman [options] [command]
 * make:model <name> [destination]: Make a model file
 * help [command]: Display help for command
 
-
 ## Uninstalling
 
 You can uninstall it using the following command:
 
-`$ npm uninstall -g @1450factory/craftsman`
+`$ npm uninstall -g @1450factory/seerjs`

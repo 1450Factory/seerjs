@@ -46,6 +46,7 @@ module.exports.toTitleCase = (string) => {
 };
 
 module.exports.createFile = (filename, type, language, destination, options = {}) => {
+  const templatesPath = path.join(__dirname, '/src/templates');
   language = (language === 'typescript') ? 'ts' : 'js';
 
   if (destination === undefined) {
@@ -54,7 +55,7 @@ module.exports.createFile = (filename, type, language, destination, options = {}
 
   mkdirp(`${destination}/app/${type}s`);
 
-  let source = fs.readFileSync(`./src/templates/${type}.${language}.tpl`);
+  let source = fs.readFileSync(`${templatesPath}/${type}.${language}.tpl`);
   let template = Handlebars.compile(source.toString());
   let output = template({ name: filename, fields: options.fields });
 

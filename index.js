@@ -5,7 +5,6 @@ const ora = require('ora');
 const git = require("simple-git");
 const { spawn, exec } = require("child_process");
 const colors = require('colors');
-const fs = require('fs');
 const inquirer = require("inquirer");
 const { toTitleCase, createFile } = require("./helpers");
 
@@ -31,12 +30,11 @@ program
       destination = destination.slice(0, -1);
     }
 
-    const remote = `https://github.com/1450Factory/express-${language}-starter.git`;
-
     name = name.toLowerCase().replace(/ /g, '_');
 
-    git().silent(true)
-      .clone(remote, `${destination}/${name}`)
+    git()
+      .silent(true)
+      .clone(`https://github.com/1450Factory/express-${language}-starter.git`, `${destination}/${name}`)
       .then(() => {
         console.log(colors.bgGreen.white('  Project created sucessfully!  \r\n'));
 
@@ -54,10 +52,37 @@ program
           spinner.stop();
           console.log(colors.bgGreen.white('  Project installed sucessfully!  \r\n'));
         });
+
+        git()
+          .silent(true)
+          .clone("https://github.com/1450Factory/seerjs.git", `${destination}/${name}/bin/seerjs`)
+          .then(() => {
+            // console.log(colors.bgGreen.white('  Project created sucessfully!  \r\n'));
+
+            // spinner.color = 'green';
+            // spinner.text = 'Installing the project... \r\n';
+
+            exec(`npm --prefix ${destination}/${name} install ${destination}/${name}/bin/seerjs`, (err, stdout, stderr) => {
+              if (err) {
+                // spinner.stop();
+                console.log(colors.bgRed.white('  There is an error during the installation!  \r\n'));
+                console.log(err);
+                // return;
+              }
+
+              // spinner.stop();
+              // console.log(colors.bgGreen.white('  Project installed sucessfully!  \r\n'));
+            });
+
+          })
+          .catch((err) => {
+            console.error('failed: ', err)
+            // spinner.stop();
+          });
       })
       .catch((err) => {
         console.error('failed: ', err)
-        spinner.stop();
+        // spinner.stop();
       });
   });
 

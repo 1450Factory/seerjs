@@ -1,6 +1,6 @@
 {
   "name": "@1450factory/seerjs",
-  "version": "0.1.1-0",
+  "version": "0.1.1",
   "description": "Seerjs is a command line help you to speed up your node projects development.",
   "keywords": [
     "nodejs",

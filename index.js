@@ -52,37 +52,10 @@ program
           spinner.stop();
           console.log(colors.bgGreen.white('  Project installed sucessfully!  \r\n'));
         });
-
-        git()
-          .silent(true)
-          .clone("https://github.com/1450Factory/seerjs.git", `${destination}/${name}/bin/seerjs`)
-          .then(() => {
-            // console.log(colors.bgGreen.white('  Project created sucessfully!  \r\n'));
-
-            // spinner.color = 'green';
-            // spinner.text = 'Installing the project... \r\n';
-
-            exec(`npm --prefix ${destination}/${name} install ${destination}/${name}/bin/seerjs`, (err, stdout, stderr) => {
-              if (err) {
-                // spinner.stop();
-                console.log(colors.bgRed.white('  There is an error during the installation!  \r\n'));
-                console.log(err);
-                // return;
-              }
-
-              // spinner.stop();
-              // console.log(colors.bgGreen.white('  Project installed sucessfully!  \r\n'));
-            });
-
-          })
-          .catch((err) => {
-            console.error('failed: ', err)
-            // spinner.stop();
-          });
       })
       .catch((err) => {
         console.error('failed: ', err)
-        // spinner.stop();
+        spinner.stop();
       });
   });
 

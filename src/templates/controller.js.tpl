@@ -1,4 +1,4 @@
-const {{toPascalCase name}} = require("../models/{{toPascalCase name}}");
+const {{toPascalCase name}} = require("../models/{{toPascalCase name}}.model");
 
 let {{toCamelCase name}}sController = {};
 

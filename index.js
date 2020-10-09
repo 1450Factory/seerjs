@@ -348,7 +348,6 @@ program
   .description("Craftsman is a command line help you to speed up your node projects development.")
   .option('-d, --debug', 'output extra debugging')
   .option('-js, --javascript', 'Use javascript (default)')
-  .option('-ts, --typescript', 'Use typescript')
-  ;
+  .option('-ts, --typescript', 'Use typescript');
 
 program.parse(process.argv);

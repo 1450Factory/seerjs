@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const Schema = mongoose.Schema
 
@@ -12,4 +13,5 @@ const {{toCamelCase name}}Schema = new Schema({
   }
 )
 
+{{toCamelCase name}}Schema.plugin(mongoosePaginate)
 module.exports = mongoose.model('{{toSnakeCase name}}s', {{toCamelCase name}}Schema)

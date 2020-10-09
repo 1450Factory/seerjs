@@ -1,5 +1,5 @@
 const express = require('express')
-const {{toCamelCase name}}sController = require('../controllers/{{toCamelCase name}}sController')
+const {{toCamelCase name}}sController = require('../controllers/{{toCamelCase name}}s.controller')
 
 const router = express.Router()
 

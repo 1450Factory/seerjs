@@ -45,8 +45,11 @@ module.exports.toTitleCase = (string) => {
     .join(' ');
 };
 
-module.exports.createFile = (filename, type, language, destination, options = {}) => {
-  const templatesPath = path.join(__dirname, '/src/templates');
+module.exports.createFile = (name, type, language, destination, options = {}) => {
+  const filename = camelize(name);
+  const templatesPath = path.join(__dirname,
+    (language === 'typescript') ? '/src/templates/ts' : '/src/templates'
+  );
   language = (language === 'typescript') ? 'ts' : 'js';
 
   if (destination === undefined) {
@@ -60,20 +63,35 @@ module.exports.createFile = (filename, type, language, destination, options = {}
   let output = template({ name: filename, fields: options.fields });
 
   try {
-    fs.writeFileSync(`${destination}/app/${type}s/${filename}s.${language}`, output, "UTF-8");
+    fs.writeFileSync(`${destination}/app/${type}s/${filename}s.${type}.${language}`, output, "UTF-8");
   } catch (error) {
     console.error(error);
   }
 
-  if (type === 'route') {
+  if (type === 'route' && language === 'js') {
     fs.readFile(`${destination}/app/routes/index.js`, 'utf8', function (err, data) {
       if (err) {
         return console.log(err);
       }
 
-      let result = data.replace(/module.exports = router/g, `router.use(\'/${filename}s\', isAuthenticated, require(\'./${filename}s\'));\r\n\r\nmodule.exports = router\r\n`);
+      const result = data
+        .replace(/module.exports = router/g, `router.use(\'/${filename}s\', isAuthenticated, require(\'./${filename}s\'));\r\n\r\nmodule.exports = router\r\n`);
 
       fs.writeFile(`${destination}/app/routes/index.js`, result, 'utf8', function (err) {
+        if (err) return console.log(err);
+      });
+    });
+  } else if (type === 'route' && language === 'ts') {
+    fs.readFile(`${destination}/app/routes/index.ts`, 'utf8', function (err, data) {
+      if (err) {
+        return console.log(err);
+      }
+
+      const result = data
+        .replace(/const router = express.Router\(\)/g, `import ${filename}sRoutes from './${filename}s.route';\r\n\r\nconst router = express.Router()`)
+        .replace(/export = router/g, `router.use(\'/${filename}s\', isAuthenticated(), ${filename}sRoutes);\r\n\r\nexport = router`);
+
+      fs.writeFile(`${destination}/app/routes/index.ts`, result, 'utf8', function (err) {
         if (err) return console.log(err);
       });
     });
@@ -92,3 +110,8 @@ mkdirp = (dir) => {
   fs.mkdirSync(dir);
 }
 
+function camelize (str) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+    return index === 0 ? word.toLowerCase() : word.toUpperCase();
+  }).replace(/\s+/g, '');
+}

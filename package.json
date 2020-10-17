@@ -15,6 +15,13 @@
     "email": "seerjs@1450factory.com"
   },
   "author": "Hamza Makraz <contact@makraz.com> (https://www.makraz.com)",
+  "contributors": [
+    {
+      "name": "Abdessamad El Bahri",
+      "email": "a.elbahri@izylabs.com",
+      "url": "https://reversablecode.github.io"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/1450Factory/seerjs.git"
